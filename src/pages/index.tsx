@@ -1,19 +1,14 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { trpc } from "../utils/trpc";
-import BasicMapComponent from "../components/map/basic_map_component";
+import { signIn, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
 const Home: NextPage = () => {
-  const BasicMapComponent = dynamic(() => import("../components/map/basic_map_component"), {
+  const BasicMapComponent = dynamic(() => import("../components/map/map_component"), {
     ssr: false,
     loading: () => <p>Loading...</p>
   });
   const { data, status } = useSession();
-
 
 
   return (
