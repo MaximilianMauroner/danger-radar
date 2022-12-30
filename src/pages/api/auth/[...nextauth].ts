@@ -15,6 +15,10 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
       }
       return session;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      account && account.user_id ? delete account.user_id : null;
+      return true;
     }
   },
   // Configure one or more authentication providers
@@ -26,10 +30,7 @@ export const authOptions: NextAuthOptions = {
     }),
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,
-      clientSecret: env.INSTAGRAM_CLIENT_SECRET,
-      client: {
-        token_endpoint_auth_method: "client_secret_post"
-      }
+      clientSecret: env.INSTAGRAM_CLIENT_SECRET
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
