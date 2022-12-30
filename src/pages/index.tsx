@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import BottomNavigation from "../components/layout/bottom_navigation";
 
 const Home: NextPage = () => {
   const BasicMapComponent = dynamic(() => import("../components/map/map_component"), {
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
         <button onClick={() => signOut()}> SignOut</button>
         <BasicMapComponent />
       </>) : <button onClick={() => signIn()}>Sign in</button>}
+      <BottomNavigation />
     </>
   );
 };
