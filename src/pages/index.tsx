@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         <meta name="description" content="Danger Radar" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {data ? <BasicMapComponent /> : <button onClick={() => signIn("discord")}>Sign in</button>}
+      {data ? <BasicMapComponent /> : <button onClick={() => signIn()}>Sign in</button>}
     </>
   );
 };
