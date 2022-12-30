@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Marker as MarkerPoint } from ".prisma/client";
-import { Marker, useMap, useMapEvents } from "react-leaflet";
+import { Circle, Marker, useMap, useMapEvents } from "react-leaflet";
 import { trpc } from "../../utils/trpc";
 import { LatLng } from "leaflet";
 import { dangerMarker } from "../icons/map_icons";
@@ -34,8 +34,12 @@ const DangerMarker = () => {
   return (
     <>
       {passMap && pointers.map((pointer: MarkerPoint) => (
-        <Marker key={(pointer.lat + pointer.lng) * Math.random()} position={new LatLng(pointer.lat, pointer.lng)}
-                icon={dangerMarker}></Marker>
+        <Circle key={(pointer.lat + pointer.lng) * Math.random()} center={new LatLng(pointer.lat, pointer.lng)}
+                radius={10}
+                color={"darkred"}
+                opacity={0.8}
+                fillOpacity={0.25}
+                fill={true}></Circle>
       ))}
     </>
   );

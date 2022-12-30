@@ -1,6 +1,6 @@
-import { type NextPage } from "next";
+import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import BottomNavigation from "../components/layout/bottom_navigation";
 
@@ -19,13 +19,26 @@ const Home: NextPage = () => {
         <meta name="description" content="Danger Radar" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {data ? (<>
-        <button onClick={() => signOut()}> SignOut</button>
+      <main className={"relative h-screen"}>
         <BasicMapComponent />
-      </>) : <button onClick={() => signIn()}>Sign in</button>}
+      </main>
       <BottomNavigation />
     </>
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false
+      }
+    };
+  }
+  return {
+    props: { session }
+  };
+};
 export default Home;

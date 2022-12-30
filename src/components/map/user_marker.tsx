@@ -4,6 +4,7 @@ import { LatLng } from "leaflet";
 import { defaultMarker } from "../icons/map_icons";
 
 const UserMarker = () => {
+
   const passMap = useMap();
   const [position, setPosition] = useState<LatLng | null>(null);
 
@@ -18,6 +19,7 @@ const UserMarker = () => {
       if (e.latlng != undefined) {
         setPosition(e.latlng);
         map.flyTo(e.latlng, map.getZoom());
+        localStorage.setItem("userLocation", JSON.stringify([e.latlng.lat, e.latlng.lng]));
       }
     }
   });
