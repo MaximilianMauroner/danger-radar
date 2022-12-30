@@ -20,7 +20,6 @@ model Example {
 model Account {
   id                String  @id @default(cuid())
   userId            String
-  user_id           String
   type              String
   provider          String
   providerAccountId String

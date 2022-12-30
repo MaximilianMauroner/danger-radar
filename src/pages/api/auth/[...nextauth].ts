@@ -1,8 +1,8 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-// Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import DiscordProvider from "next-auth/providers/discord";
 import InstagramProvider from "next-auth/providers/instagram";
+import GoogleProvider from "next-auth/providers/google";
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
 
@@ -26,9 +26,26 @@ export const authOptions: NextAuthOptions = {
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,
       clientSecret: env.INSTAGRAM_CLIENT_SECRET
+    }),
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET
     })
-  ]
-
+  ],
+  events: {
+    async signIn(message) {
+      console.log("signin", message);
+    },
+    async createUser(message) {
+      console.log("createUser", message);
+    },
+    async updateUser(message) {
+      console.log("updateUser", message);
+    },
+    async linkAccount(message) {
+      console.log("linkAccount", message);
+    },
+  }
 };
 
 export default NextAuth(authOptions);

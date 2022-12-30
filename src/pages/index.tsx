@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
 const Home: NextPage = () => {
@@ -18,7 +18,10 @@ const Home: NextPage = () => {
         <meta name="description" content="Danger Radar" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {data ? <BasicMapComponent /> : <button onClick={() => signIn()}>Sign in</button>}
+      {data ? (<>
+        <button onClick={() => signOut()}> SignOut</button>
+        <BasicMapComponent />
+      </>) : <button onClick={() => signIn()}>Sign in</button>}
     </>
   );
 };
