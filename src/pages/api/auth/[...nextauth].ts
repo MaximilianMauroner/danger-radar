@@ -34,16 +34,16 @@ export const authOptions: NextAuthOptions = {
   ],
   events: {
     async signIn(message) {
-      console.log("signin", message);
+      console.log("signin asdfj", message);
     },
     async createUser(message) {
-      console.log("createUser", message);
+      console.log("createUser asdfj", message);
     },
     async updateUser(message) {
-      console.log("updateUser", message);
+      console.log("updateUser asdfj", message);
     },
     async linkAccount(message) {
-      console.log("linkAccount", message);
+      console.log("linkAccount asdfj", message);
     },
   }
 };
