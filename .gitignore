@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-
 # testing
 /coverage
 
@@ -38,3 +37,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# IDEs and editors
+/.idea/
+.idea/*
