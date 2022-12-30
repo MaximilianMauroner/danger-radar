@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ account }) {
       account && account.user_id ? delete account.user_id : null;
       return true;
     }
