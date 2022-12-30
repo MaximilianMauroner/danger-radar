@@ -8,6 +8,7 @@ import { prisma } from "../../../server/db/client";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
+  debug: true,
   callbacks: {
     session({ session, user }) {
       if (session.user) {
@@ -25,37 +26,16 @@ export const authOptions: NextAuthOptions = {
     }),
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,
-      clientSecret: env.INSTAGRAM_CLIENT_SECRET
+      clientSecret: env.INSTAGRAM_CLIENT_SECRET,
+      client: {
+        token_endpoint_auth_method: "client_secret_post"
+      }
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET
     })
-  ],
-  events: {
-    async signIn(message) {
-      console.log("signin asdfj", message);
-    },
-    async createUser(message) {
-      console.log("createUser asdfj", message);
-    },
-    async updateUser(message) {
-      console.log("updateUser asdfj", message);
-    },
-    async linkAccount(message) {
-      console.log("linkAccount asdfj", message);
-    }
-  }, logger: {
-    error(code, metadata) {
-      console.error("df", code, metadata);
-    },
-    warn(code) {
-      console.warn("df", code);
-    },
-    debug(code, metadata) {
-      console.debug("df", code, metadata);
-    }
-  }
+  ]
 };
 
 export default NextAuth(authOptions);
