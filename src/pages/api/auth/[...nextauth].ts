@@ -44,7 +44,17 @@ export const authOptions: NextAuthOptions = {
     },
     async linkAccount(message) {
       console.log("linkAccount asdfj", message);
+    }
+  }, logger: {
+    error(code, metadata) {
+      console.error("df", code, metadata);
     },
+    warn(code) {
+      console.warn("df", code);
+    },
+    debug(code, metadata) {
+      console.debug("df", code, metadata);
+    }
   }
 };
 
