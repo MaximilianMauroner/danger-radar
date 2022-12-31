@@ -44,7 +44,7 @@ const Friendcode = () => {
   if (!friendcode || isLoading || isSelfLoading || !friendData || !userId) {
     return <LoadingComponent title={"Add a Friend"} />;
   }
-  if (selfData?.friends?.find(e => e.friendRelationId === userId) || success) {
+  if (selfData?.userFriendsRecords?.find(e => e.friendId === userId) || success) {
     const text = success ? "You are now friends with " : "You are already friends with ";
     return (<>
       <Head>
