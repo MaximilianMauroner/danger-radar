@@ -1,13 +1,14 @@
 import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import BottomNavigation from "../components/layout/bottom_navigation";
+import LoadingComponent from "../components/loading_component";
 
 const Home: NextPage = () => {
   const BasicMapComponent = dynamic(() => import("../components/map/map_component"), {
     ssr: false,
-    loading: () => <p>Loading...</p>
+    loading: () => <LoadingComponent title={"Danger Radar"} />
   });
   const { data, status } = useSession();
 

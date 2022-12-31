@@ -1,9 +1,17 @@
-import { ShieldExclamationIcon, ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ShieldExclamationIcon, ArrowRightOnRectangleIcon, UserIcon, MapIcon } from "@heroicons/react/24/outline";
 import { signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 
 const BottomNavigation = () => {
   const iconClass = "m-auto w-8 h-8";
+  const [showAccount, setShowAccount] = useState(true);
+  useEffect(() => {
+    if (window.location.pathname === "/account") {
+      setShowAccount(false);
+    }
+  }, []);
 
   return (
     <div className="w-full z-50">
@@ -11,11 +19,17 @@ const BottomNavigation = () => {
                className="block fixed inset-x-0 bottom-0 z-10 dark:bg-slate-800 bg-white dark:text-white">
         <div id="tabs" className="flex justify-between relative">
           <div className={"w-full inline-block text-center pt-2 pb-1"}>
-            <a href={"/account"}
-               className="block w-min m-auto focus:text-gray-300 hover:text-gray-300">
-              <UserIcon className={iconClass} />
-              <span className="tab tab-home block text-xs">{"Account"}</span>
-            </a>
+            {showAccount ? <Link href={"/account"}
+                                 className="block w-min m-auto focus:text-gray-300 hover:text-gray-300">
+                <UserIcon className={iconClass} />
+                <span className="tab tab-home block text-xs">{"Account"}</span>
+              </Link> :
+              <Link href={"/"}
+                    className="block w-min m-auto focus:text-gray-300 hover:text-gray-300">
+                <MapIcon className={iconClass} />
+                <span className="tab tab-home block text-xs">{"Map"}</span>
+              </Link>
+            }
           </div>
           <div className={"w-full inline-block text-center pt-2 pb-1"}>
             <button onClick={() => signOut()}
