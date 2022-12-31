@@ -5,6 +5,8 @@ import type { Map as LeafletMap } from "leaflet";
 import { trpc } from "../../utils/trpc";
 import { LatLng } from "leaflet";
 
+const maxOpacity = 0.8;
+
 const DangerMarker = () => {
   const [pointers, setPointers] = useState<MarkerPoint[]>([]);
   const passMap = useMap();
@@ -39,13 +41,14 @@ const DangerMarker = () => {
   return (
     <>
       {passMap && pointers.map((pointer: MarkerPoint) => (
-        <Circle key={(pointer.lat + pointer.lng) * Math.random()} center={new LatLng(pointer.lat, pointer.lng)}
-                radius={Math.pow((19 - pointer.zoomLevel)+2, 3)}
-                color={"darkred"}
-                opacity={0.8}
-                interactive={true}
-                fillOpacity={0.25}
-                fill={true}></Circle>
+        <>
+          <Circle key={(pointer.lat + pointer.lng) * Math.random()} center={new LatLng(pointer.lat, pointer.lng)}
+                  radius={Math.pow((19 - pointer.zoomLevel) + 2, 3)}
+                  color={"darkred"}
+                  opacity={1 / (19 - pointer.zoomLevel) * 0.5 <= maxOpacity ? 1 / (19 - pointer.zoomLevel) * 0.5 : maxOpacity}
+                  fillOpacity={1 / (19 - pointer.zoomLevel) * 0.5 <= maxOpacity ? 1 / (19 - pointer.zoomLevel) * 0.5 : maxOpacity}
+                  fill={true}></Circle>
+        </>
       ))}
     </>
   );
