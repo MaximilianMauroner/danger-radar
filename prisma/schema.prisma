@@ -67,6 +67,7 @@ model Marker {
   name       String?
   lat        Float
   lng        Float
+  zoomLevel  Int
   markerType MarkerType  @default(USER)
   userId     String?
   message    String?     @db.Text

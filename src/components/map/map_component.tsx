@@ -6,8 +6,9 @@ import UserMarker from "./user_marker";
 
 function Map() {
   const userLocation = JSON.parse(localStorage.getItem("userLocation") || "[51.505, -0.09]");
+  const userZoom = JSON.parse(localStorage.getItem("userZoom") || "17");
   return (
-    <MapContainer center={userLocation} zoom={17} scrollWheelZoom={true} style={{
+    <MapContainer center={userLocation} zoom={userZoom} scrollWheelZoom={true} style={{
       position: "absolute",
       width: "100%",
       top: 0,

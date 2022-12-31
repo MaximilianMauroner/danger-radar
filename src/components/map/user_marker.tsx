@@ -17,6 +17,9 @@ const UserMarker = () => {
   const map = useMapEvents({
     locationfound(e: any) {
       if (e.latlng != undefined) {
+        if (localStorage.getItem("userLocation")) {
+          return;
+        }
         setPosition(e.latlng);
         map.flyTo(e.latlng, map.getZoom());
         localStorage.setItem("userLocation", JSON.stringify([e.latlng.lat, e.latlng.lng]));
