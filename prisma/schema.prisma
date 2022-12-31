@@ -52,19 +52,19 @@ model User {
   accounts           Account[]
   sessions           Session[]
   Marker             Marker[]
-  userFriendsRecords Friend[]  @relation("friendRelation")
+  userFriendsRecords Friend[]  @relation("self")
   friends            Friend[]  @relation("friend")
 }
 
 model Friend {
+  selfId               String
   friendId             String
-  friendRelationId     String
+  self                 User    @relation("self", fields: [selfId], references: [id])
   friend               User    @relation("friend", fields: [friendId], references: [id])
-  friendRelation       User    @relation("friendRelation", fields: [friendRelationId], references: [id])
   allowLocationSharing Boolean @default(false)
   isEmergencyContact   Boolean @default(false)
 
-  @@id([friendId, friendRelationId])
+  @@id([selfId, friendId])
 }
 
 model VerificationToken {

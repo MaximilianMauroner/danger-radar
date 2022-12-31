@@ -8,9 +8,14 @@ export const userRouter = router({
       .query(async ({ ctx, input }) => {
         return ctx.prisma.user.findFirst({
           where: {
-            id: input.id
+            id: input.id,
+            userFriendsRecords: {
+              every: {
+                selfId: input.id
+              }
+            }
           },
-          include: { friends: { include: { friendRelation: true } } }
+          include: { userFriendsRecords: { include: { friend: true } } }
         });
       }),
     addFriend: protectedProcedure
@@ -22,26 +27,33 @@ export const userRouter = router({
             message: "You can't add yourself as a friend"
           });
         }
-        return ctx.prisma.user.update({
-          where: {
-            id: ctx.session.user.id
-          },
-          data: {
-            friends: {
-              connectOrCreate: {
-                create: {
-                  friendRelationId: input.userId
-                },
-                where: {
-                  friendId_friendRelationId: {
-                    friendRelationId: input.userId,
-                    friendId: ctx.session.user.id
-                  }
-                }
-              }
-            }
-          }
+        return ctx.prisma.friend.createMany({
+          data: [{
+            friendId: input.userId,
+            selfId: ctx.session.user.id
+          }, {
+            selfId: input.userId,
+            friendId: ctx.session.user.id
+          }]
         });
-      })
+      }),
+    managePermissions: protectedProcedure.input(z.object({
+      friendId: z.string(),
+      allowLocationSharing: z.boolean(),
+      isEmergencyContact: z.boolean()
+    })).mutation(({ ctx, input }) => {
+      return ctx.prisma.friend.update({
+        where: {
+          selfId_friendId: {
+            friendId: input.friendId,
+            selfId: ctx.session.user.id
+          }
+        },
+        data: {
+          allowLocationSharing: input.allowLocationSharing,
+          isEmergencyContact: input.isEmergencyContact
+        }
+      });
+    })
   })
 ;
