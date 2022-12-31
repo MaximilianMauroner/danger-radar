@@ -30,12 +30,12 @@ export const userRouter = router({
             friends: {
               connectOrCreate: {
                 create: {
-                  userId: input.userId
+                  friendRelationId: input.userId
                 },
                 where: {
-                  friendId_userId: {
-                    friendId: input.userId,
-                    userId: ctx.session.user.id
+                  friendId_friendRelationId: {
+                    friendRelationId: input.userId,
+                    friendId: ctx.session.user.id
                   }
                 }
               }

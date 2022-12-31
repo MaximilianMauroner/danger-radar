@@ -58,13 +58,13 @@ model User {
 
 model Friend {
   friendId             String
-  userId               String
+  friendRelationId     String
   friend               User    @relation("friend", fields: [friendId], references: [id])
-  user                 User    @relation("friendRelation", fields: [userId], references: [id])
+  friendRelation       User    @relation("friendRelation", fields: [friendRelationId], references: [id])
   allowLocationSharing Boolean @default(false)
   isEmergencyContact   Boolean @default(false)
 
-  @@id([friendId, userId])
+  @@id([friendId, friendRelationId])
 }
 
 model VerificationToken {
