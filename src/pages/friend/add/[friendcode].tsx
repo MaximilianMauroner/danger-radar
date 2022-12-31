@@ -9,6 +9,7 @@ import Loading_component from "../../../components/loading_component";
 import LoadingComponent from "../../../components/loading_component";
 import Link from "next/link";
 import { env } from "../../../env/client.mjs";
+import { useState } from "react";
 
 const decryptFriendLink: (id: string, remaining: number) => (string) = (id: string, remaining: number) => {
   if (remaining === 0) {
@@ -23,6 +24,7 @@ const Friendcode = () => {
   const { friendcode } = router.query;
   const { data: sessionData, status } = useSession({ required: true });
   const userId = decryptFriendLink(z.string().parse(friendcode ? friendcode : ""), env.NEXT_PUBLIC_ENCRYPTION_COUNT);
+  const [success, setSuccess] = useState(false);
   const {
     data: selfData,
     isLoading: isSelfLoading
@@ -31,20 +33,25 @@ const Friendcode = () => {
     data: friendData,
     isLoading
   } = trpc.user.getUser.useQuery({ id: userId ? userId : "" }, { enabled: !!userId });
-  const addFriendMutation = trpc.user.addFriend.useMutation();
+  const addFriendMutation = trpc.user.addFriend.useMutation({
+    onSuccess: () => {
+      setSuccess(true);
+    }
+  });
   if (userId == sessionData?.user?.id) {
     router.push("/");
   }
   if (!friendcode || isLoading || isSelfLoading || !friendData || !userId) {
     return <LoadingComponent title={"Add a Friend"} />;
   }
-  if (selfData?.friends?.find(e => e.userId === userId)) {
+  if (selfData?.friends?.find(e => e.friendRelationId === userId) || success) {
+    const text = success ? "You are now friends with " : "You are already friends with ";
     return (<>
       <Head>
-        <title>{"Already Friends with " + friendData.name}</title>
+        <title>{text + friendData.name}</title>
       </Head>
       <main className={"relative h-screen dark:bg-gray-900 dark:text-white flex flex-col justify-center items-center"}>
-        <h1 className={"text-center text-xl"}> {"Already Friends with"} <b
+        <h1 className={"text-center text-xl"}> {text} <b
           className={"text-green-300"}>{friendData.name}</b></h1>
         <Link className={"pt-4 text-gray-300 underline"} href={"/"}> Home</Link>
       </main>

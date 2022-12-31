@@ -24,7 +24,7 @@ const DangerMarker = ({ openModal }: { openModal: (latLng: LatLng) => void }) =>
   });
   const eventMap = useMapEvents({
     click(e) {
-      if (zoom > 15) {
+      if (zoom >= 15) {
         openModal(e.latlng);
       }
     },

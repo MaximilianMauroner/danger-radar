@@ -7,6 +7,7 @@ import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import LoadingComponent from "../components/loading_component";
 import { env } from "../env/client.mjs";
+import { User } from "@prisma/client";
 
 const encryptFriendLink: (id: string, remaining: number) => (string) = (id: string, remaining: number) => {
   if (remaining === 0) {
@@ -61,6 +62,13 @@ const AccountPage = () => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
         </div>
+        <div className={"flex flex-col"}>
+          {userData?.friends.map((friend) => (
+            <div className={"text-center my-2 dark:bg-slate-800 w-1/2 m-auto rounded"} key={friend.friendRelationId}>
+              <ManageFriends friend={friend.friendRelation} />
+            </div>
+          ))}
+        </div>
         <div className={"flex justify-center my-5"}>
           <button
             onClick={() => {
@@ -79,5 +87,9 @@ const AccountPage = () => {
       <BottomNavigation />
     </>
   );
+};
+
+const ManageFriends = ({ friend }: { friend: User }) => {
+  return <span className={"dark:text-white text-xl text-center"}>{friend.name}</span>;
 };
 export default AccountPage;

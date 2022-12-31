@@ -26,7 +26,8 @@ function Map() {
         bottom: 0,
         zIndex: 10
       }}>
-        <CreateMarkerModal modalOpen={isModalOpen} markerPosition={modalLatLng}
+        <CreateMarkerModal key={modalLatLng.lat + " " + modalLatLng.lng} modalOpen={isModalOpen}
+                           markerPosition={modalLatLng}
                            closeModal={() => setIsModalOpen(false)} />
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
