@@ -69,7 +69,7 @@ const CreateMarkerModal = ({
                       </Dialog.Title>
                       <div className="mt-2 w-full">
                         <p className={"flex flex-col my-3 w-full rounded-xl text-sm text-gray-500"}>
-                          <span>Latitude Long: {formatLatLng(markerPosition.lat)}</span>
+                          <span>Latitude: {formatLatLng(markerPosition.lat)}</span>
                           <span>Longitude: {formatLatLng(markerPosition.lng)}</span>
                         </p>
                       </div>

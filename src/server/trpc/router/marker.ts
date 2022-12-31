@@ -38,7 +38,7 @@ export const markerRouter = router({
         },
         zoomLevel: {
           gte: input.zoomLevel - 4,
-          lte: input.zoomLevel + 2
+          lte: input.zoomLevel + 4
         }
       }
     });

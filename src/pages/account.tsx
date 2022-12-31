@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import LoadingComponent from "../components/loading_component";
+import { env } from "../env/client.mjs";
 
 const encryptFriendLink: (id: string, remaining: number) => (string) = (id: string, remaining: number) => {
   if (remaining === 0) {
@@ -33,7 +34,7 @@ const AccountPage = () => {
   }
   let friendUrl = "";
   if (data?.user?.name) {
-    friendUrl = window.location.origin + "/friend/add/" + encryptFriendLink(data?.user?.id, 5);
+    friendUrl = window.location.origin + "/friend/add/" + encryptFriendLink(data?.user?.id, env.NEXT_PUBLIC_ENCRYPTION_COUNT);
   }
   return (
     <>

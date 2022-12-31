@@ -44,15 +44,29 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Marker        Marker[]
+  id                 String    @id @default(cuid())
+  name               String?
+  email              String?   @unique
+  emailVerified      DateTime?
+  image              String?
+  accounts           Account[]
+  sessions           Session[]
+  Marker             Marker[]
+  userFriendsRecords Friend[]  @relation("friendRelation")
+  friends            Friend[]  @relation("friend")
 }
+
+model Friend {
+  friendId             String
+  userId               String
+  friend               User    @relation("friend", fields: [friendId], references: [id])
+  user                 User    @relation("friendRelation", fields: [userId], references: [id])
+  allowLocationSharing Boolean @default(false)
+  isEmergencyContact   Boolean @default(false)
+
+  @@id([friendId, userId])
+}
+
 model VerificationToken {
   identifier String
   token      String   @unique

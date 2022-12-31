@@ -7,6 +7,8 @@ import Head from "next/head";
 import Image from "next/image";
 import Loading_component from "../../../components/loading_component";
 import LoadingComponent from "../../../components/loading_component";
+import Link from "next/link";
+import { env } from "../../../env/client.mjs";
 
 const decryptFriendLink: (id: string, remaining: number) => (string) = (id: string, remaining: number) => {
   if (remaining === 0) {
@@ -19,35 +21,56 @@ const decryptFriendLink: (id: string, remaining: number) => (string) = (id: stri
 const Friendcode = () => {
   const router = useRouter();
   const { friendcode } = router.query;
-  const { status } = useSession({ required: true });
-  const userId = decryptFriendLink(z.string().parse(friendcode ? friendcode : ""), 5);
-  const { data: userData, isLoading } = trpc.user.getUser.useQuery({ id: userId ? userId : "" }, { enabled: !!userId });
-  if (!friendcode || isLoading || !userData) {
+  const { data: sessionData, status } = useSession({ required: true });
+  const userId = decryptFriendLink(z.string().parse(friendcode ? friendcode : ""), env.NEXT_PUBLIC_ENCRYPTION_COUNT);
+  const {
+    data: selfData,
+    isLoading: isSelfLoading
+  } = trpc.user.getUser.useQuery({ id: sessionData?.user?.id ? sessionData?.user?.id : "" }, { enabled: !!sessionData?.user?.id });
+  const {
+    data: friendData,
+    isLoading
+  } = trpc.user.getUser.useQuery({ id: userId ? userId : "" }, { enabled: !!userId });
+  const addFriendMutation = trpc.user.addFriend.useMutation();
+  if (userId == sessionData?.user?.id) {
+    router.push("/");
+  }
+  if (!friendcode || isLoading || isSelfLoading || !friendData || !userId) {
     return <LoadingComponent title={"Add a Friend"} />;
   }
-
+  if (selfData?.friends?.find(e => e.id === userId)) {
+    return (<>
+      <Head>
+        <title>{"Already Friends with " + friendData.name}</title>
+      </Head>
+      <main className={"relative h-screen dark:bg-gray-900 dark:text-white flex flex-col justify-center items-center"}>
+        <h1 className={"text-center text-xl"}> {"Already Friends with"} <b
+          className={"text-green-300"}>{friendData.name}</b></h1>
+        <Link className={"pt-4 text-gray-300 underline"} href={"/"}> Home</Link>
+      </main>
+    </>);
+  }
   return (
     <>
       <Head>
         <title>{"Add a Friend"}</title>
       </Head>
       <main className={"relative h-screen dark:bg-gray-900 dark:text-white"}>
-        {userData?.image ?
+        {friendData?.image ?
           <div className={"pt-3"}>
-            <Image src={userData?.image} className={"m-auto rounded-full"} alt={"User Image"} width={100}
+            <Image src={friendData?.image} className={"m-auto rounded-full"} alt={"User Image"} width={100}
                    height={100} /></div> : null}
-        <h1 className={"text-center text-xl"}>{userData.name}</h1>
+        <h1 className={"text-center text-xl"}>{friendData.name}</h1>
         <button
           className={"m-auto block my-3 dark:text-white p-3 dark:bg-green-600 rounded-2xl dark:hover:bg-green-600"}
           onClick={() => {
-            console.log("add friend");
+            addFriendMutation.mutate({ userId: userId });
           }}
         >
 
-          {["Add", userData.name, "as Friend"].join(" ")}
+          {["Add", friendData.name, "as Friend"].join(" ")}
         </button>
       </main>
-    </>
-  );
+    </>);
 };
 export default Friendcode;
