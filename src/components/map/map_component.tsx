@@ -10,8 +10,6 @@ import { useState } from "react";
 function Map() {
   const userLocation = JSON.parse(localStorage.getItem("userLocation") || "[51.505, -0.09]");
   const userZoom = JSON.parse(localStorage.getItem("userZoom") || "17");
-
-;
   return (
     <>
 
