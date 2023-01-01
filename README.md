@@ -34,8 +34,15 @@ providing them with a range of features and resources to help protect them and k
 
 ## Todo
 
-- [ ] Add more documentation
-- [ ] implement better modal
+- [x]  map integration
+- [x]  friend invites
+- [ ]  friends can see GPS for x minutes or until x location
+- [x]  map point add modal
+- [x]  account page
+- [ ]  show emergency contact list
+- [ ]  implement useful Infos page for self defense
+- [ ]  safe route calculator
+- [ ] implement better modal with "good point" and "bad point" dropdown
 - [ ] time selector for danger radar
 - [ ] emergency sharing functionality
 - [ ] location tracking functionality
