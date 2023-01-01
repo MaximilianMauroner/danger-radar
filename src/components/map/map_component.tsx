@@ -2,9 +2,6 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import DangerMarker from "./danger_marker";
 import UserMarker from "./user_marker";
-import { LatLng, latLng } from "leaflet";
-import CreateMarkerModal from "./create_marker_modal";
-import { useState } from "react";
 
 
 function Map() {
