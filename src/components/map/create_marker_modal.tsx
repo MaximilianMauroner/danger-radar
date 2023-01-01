@@ -150,30 +150,33 @@ const CreateMarkerModal = ({
                           {dynamicString("Danger", "Safety") + " Level"}
                         </h3>
                         <ul
-                          className="mb-5 flex divide-x divide-gray-200 rounded-lg text-center text-sm font-medium shadow sm:flex">
-                          <li className="w-full">
+                          className="mb-5 flex gap-1 rounded-lg text-center text-sm font-medium shadow sm:flex">
+                          <li
+                            className={["w-full", level === "LOW" ? "outline outline-slate-900  rounded-l-lg" : ""].join(" ")}>
                             <button
                               onClick={() => setLevel("LOW")}
                               className={
-                                " inline-block w-full rounded-l-lg p-4 text-white focus:ring-0 " +
+                                "inline-block w-full rounded-l-lg p-4 text-white focus:ring-0 " +
                                 dynamicString("bg-rose-400  hover:bg-rose-300", "bg-emerald-400  hover:bg-emerald-300")
                               }
                             >
                               Low
                             </button>
                           </li>
-                          <li className="w-full">
+                          <li
+                            className={["w-full", level === "MEDIUM" ? "outline outline-slate-900" : ""].join(" ")}>
                             <button
                               onClick={() => setLevel("MEDIUM")}
                               className={
-                                "active inline-block w-full p-4 text-white focus:ring-0 " +
+                                "inline-block w-full p-4 text-white focus:ring-0 " +
                                 dynamicString("bg-rose-600  hover:bg-rose-500", "bg-emerald-600  hover:bg-emerald-500")
                               }
                             >
                               Medium
                             </button>
                           </li>
-                          <li className="w-full">
+                          <li
+                            className={["w-full", level === "HIGH" ? "outline outline-slate-900  rounded-r-lg" : ""].join(" ")}>
                             <button
                               onClick={() => setLevel("HIGH")}
                               className={
