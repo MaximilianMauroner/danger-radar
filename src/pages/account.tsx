@@ -22,7 +22,8 @@ const AccountPage = () => {
   const [name, setName] = useState<string>(data?.user?.name ? data?.user?.name : "");
   const {
     data: userData,
-    isLoading
+    isLoading,
+    refetch
   } = trpc.user.getUser.useQuery({ id: data?.user?.id || "" }, {
     enabled: !!data?.user?.id, onSuccess: (data) => {
       if (data?.name) {
@@ -30,6 +31,19 @@ const AccountPage = () => {
       }
     }
   });
+  const mutation = trpc.user.managePermissions.useMutation();
+
+  const mumtatePermissions = (friendId: string, allowLocationSharing: boolean, emergencyContact: boolean) => {
+    mutation.mutate({
+      friendId: friendId,
+      isEmergencyContact: allowLocationSharing,
+      allowLocationSharing: emergencyContact
+    }, {
+      onSuccess: () => {
+        refetch();
+      }
+    });
+  };
   if (isLoading) {
     return <LoadingComponent title={"Danger Radar"} />;
   }
@@ -49,40 +63,39 @@ const AccountPage = () => {
           <div className={"pt-3"}>
             <Image src={data?.user?.image} className={"m-auto rounded-full"} alt={"User"} width={100}
                    height={100} /></div> : null}
-        <div className="w-full px-5 sm:px-0 m-auto sm:w-2/3 md:w-1/2">
-          <label htmlFor="first-name" className="block text-sm font-medium dark:text-white text-gray-700">
+        <div className="w-full p-5 sm:py-5 sm:px-0 m-auto sm:w-2/3 md:w-1/2">
+          <span className="block text-sm font-medium dark:text-white text-gray-700">
             Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            autoComplete="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
+          </span>
+          <span className={"block text-2xl font-bold dark:text-white text-gray-700"}>
+            {name}
+          </span>
         </div>
-        <div className={"flex flex-col"}>
-          {userData?.userFriendsRecords.map((friend) => (
-            <div key={friend.friendId}>
-              <ManageFriends friend={friend} />
-            </div>
-          ))}
-        </div>
-        <div className={"flex justify-center my-5"}>
-          <button
-            onClick={() => {
-              navigator.share({
-                title: "Add Friend",
-                text: "Share this with a Friend to add them",
-                url: friendUrl
-              });
-              navigator.clipboard.writeText(friendUrl);
-            }}
-            className={"dark:text-white w-max p-3 border dark:border-green-600 rounded-2xl dark:hover:bg-green-600"}>
-            Add Friend
-          </button>
+        <div className="w-full px-3 sm:px-0 m-auto sm:w-2/3 md:w-1/2 pt-5">
+        <span className={"block text-3xl font-bold dark:text-emerald-400 text-gray-700"}>
+        {"Friends"}
+        </span>
+          <div className={"flex flex-col"}>
+            {userData?.userFriendsRecords.map((friend) => (
+              <div key={friend.friendId}>
+                <ManageFriends friend={friend} mumtatePermissions={mumtatePermissions} />
+              </div>
+            ))}
+          </div>
+          <div className={"flex justify-center my-5"}>
+            <button
+              onClick={() => {
+                navigator.share({
+                  title: "Add Friend",
+                  text: "Share this with a Friend to add them",
+                  url: friendUrl
+                });
+                navigator.clipboard.writeText(friendUrl);
+              }}
+              className={"dark:text-white w-max p-3 border dark:border-green-600 rounded-2xl dark:hover:bg-green-600"}>
+              Add Friend
+            </button>
+          </div>
         </div>
       </main>
       <BottomNavigation />
@@ -90,45 +103,43 @@ const AccountPage = () => {
   );
 };
 
-const ManageFriends = ({ friend }: { friend: Friend & { friend: User } }) => {
-  const [emergencyContact, setEmergencyContact] = useState<boolean>(friend.isEmergencyContact);
+const ManageFriends = ({ friend, mumtatePermissions }: {
+  friend: Friend & { friend: User },
+  mumtatePermissions: (friendId: string, allowLocationSharing: boolean, emergencyContact: boolean) => void
+}) => {
   const [allowLocationSharing, setAllowLocationSharing] = useState<boolean>(friend.allowLocationSharing);
+  const [emergencyContact, setEmergencyContact] = useState<boolean>(friend.isEmergencyContact);
 
-  const mutation = trpc.user.managePermissions.useMutation();
 
   const updatePermissions = (location: boolean, emContact: boolean) => {
-    mutation.mutate({
-      friendId: friend.friendId,
-      isEmergencyContact: emContact,
-      allowLocationSharing: location
-    });
+    mumtatePermissions(friend.friendId, location, emContact);
     setAllowLocationSharing(location);
     setEmergencyContact(emContact);
   };
   return (
-    <div className={" my-2 dark:bg-slate-800 w-1/2 m-auto rounded-xl"}>
-      <p className={"text-center dark:text-white text-xl text-center"}>{friend.friend.name}</p>
+    <div className={" my-2 dark:bg-slate-800 w-full m-auto rounded-xl"}>
+      <p className={"text-center dark:text-slate-300 font-semibold text-xl text-center"}>{friend.friend.name}</p>
       <div className={"flex gap-2.5 justify-center items-center py-2"}>
-        <div className="flex justify-center">
-          <div className="form-check form-switch">
-            <label className="form-check-label inline-block dark:text-white text-gray-800"
-                   htmlFor="flexSwitchCheckDefault">Share Location</label>
-            <input
-              className="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
-              type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={allowLocationSharing}
-              onChange={() => updatePermissions(!allowLocationSharing, emergencyContact)} />
+        <label className="inline-flex items-center cursor-pointer">
+          <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">Share Location</span>
+          <div className={"relative inline-flex items-center cursor-pointer"}>
+            <input type="checkbox" value="" className="sr-only peer" checked={allowLocationSharing}
+                   onChange={() => updatePermissions(!allowLocationSharing, emergencyContact)} />
+            <div
+              className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-0 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
           </div>
-        </div>
+        </label>
       </div>
       <div className={"flex gap-2.5 justify-center py-2"}>
-        <div className="form-check form-switch">
-          <label className="form-check-label inline-block text-gray-800 dark:text-white "
-                 htmlFor="flexSwitchCheckDefault">Emergency Contact</label>
-          <input
-            className="form-check-input appearance-none w-9 -ml-10 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
-            type="checkbox" role="switch" id="flexSwitchCheckDefault" checked={emergencyContact}
-            onChange={() => updatePermissions(allowLocationSharing, !emergencyContact)} />
-        </div>
+        <label className="inline-flex  items-center  cursor-pointer">
+          <span className="mr-3 text-sm font-medium text-gray-900 dark:text-gray-300">Emergency Contact</span>
+          <div className={"relative inline-flex items-center cursor-pointer"}>
+            <input type="checkbox" value="" className="sr-only peer" checked={emergencyContact}
+                   onChange={() => updatePermissions(allowLocationSharing, !emergencyContact)} />
+            <div
+              className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-0  dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-red-600"></div>
+          </div>
+        </label>
       </div>
     </div>
   );

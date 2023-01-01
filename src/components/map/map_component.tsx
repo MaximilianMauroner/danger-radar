@@ -10,12 +10,8 @@ import { useState } from "react";
 function Map() {
   const userLocation = JSON.parse(localStorage.getItem("userLocation") || "[51.505, -0.09]");
   const userZoom = JSON.parse(localStorage.getItem("userZoom") || "17");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalLatLng, setModalLatLng] = useState<LatLng>(latLng(0, 0));
-  const openModal = (latlng: LatLng) => {
-    setModalLatLng(latlng);
-    setIsModalOpen(true);
-  };
+
+;
   return (
     <>
 
@@ -26,13 +22,11 @@ function Map() {
         bottom: 0,
         zIndex: 10
       }}>
-        <CreateMarkerModal key={modalLatLng.lat + " " + modalLatLng.lng} modalOpen={isModalOpen}
-                           markerPosition={modalLatLng}
-                           closeModal={() => setIsModalOpen(false)} />
+
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <UserMarker />
-        <DangerMarker openModal={openModal} />
+        <DangerMarker />
       </MapContainer>
     </>
   );

@@ -1,27 +1,55 @@
-# Create T3 App
+# Danger Radar scuffed documentation
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+## What is this? (ChatGPT summary)
 
-## What's next? How do I make an app with this?
+An app that aims to protect women when they return home could have a variety of interesting and useful features. Some
+potential features could include the following:
 
-We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
+- GPS tracking: This could allow friends, family members, or other trusted individuals to monitor the user's location in
+  real time and ensure that they are safe as they make their way home.
+- Panic button: This could allow the user to quickly and easily send a distress signal to designated contacts in the
+  event of an emergency.
+- Safe routes: The app could provide the user with a range of safe routes to choose from when traveling home, taking
+  into account factors such as lighting, traffic, and potential hazards.
+- Self-defense tips and techniques: The app could provide the user with information and guidance on how to defend
+  themselves in a variety of situations, such as how to escape a choke hold or how to effectively use pepper spray.
+- Connections to local law enforcement: The app could allow the user to quickly and easily connect with local law
+  enforcement agencies in the event of an emergency, providing them with a direct line of communication to help ensure
+  their safety.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Overall, an app like this could be a valuable tool for women who are concerned about their safety when traveling home,
+providing them with a range of features and resources to help protect them and keep them safe.
 
-- [Next-Auth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [TailwindCSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### My Basic Idea
 
-We also [roll our own docs](https://beta.create.t3.gg) with some summary information and links to the respective documentation.
+- map of dangerous places
+    - with comments from people
+    - radius of danger
+    - time of danger
+    - (maybe news regarding danger/sources)
+- emergency contact list with location data
+    - emergency police call
+        - check if there is a way to send police the information data
+- insert place and the least dangerous route will be found
 
-Also checkout these awesome tutorials on `create-t3-app`.
+## Todo
 
-- [Build a Blog With the T3 Stack - tRPC, TypeScript, Next.js, Prisma & Zod](https://www.youtube.com/watch?v=syEWlxVFUrY)
-- [Build a Live Chat Application with the T3 Stack - TypeScript, Tailwind, tRPC](https://www.youtube.com/watch?v=dXRRY37MPuk)
-- [Build a full stack app with create-t3-app](https://www.nexxel.dev/blog/ct3a-guestbook)
-- [A first look at create-t3-app](https://dev.to/ajcwebdev/a-first-look-at-create-t3-app-1i8f)
+- [ ] Add more documentation
+- [ ] implement better modal
+- [ ] time selector for danger radar
+- [ ] emergency sharing functionality
+- [ ] location tracking functionality
+- [ ] street name and pathfinder
+- [ ] danger point slider
+- [ ] positive points with annotations e.g. "safe place" or "good lighting"
 
-## How do I deploy this?
+## Technologies
 
-Follow our deployment guides for [Vercel](https://beta.create.t3.gg/en/deployment/vercel) and [Docker](https://beta.create.t3.gg/en/deployment/docker) for more information.
+- Language: TS with Next.js
+- UI and Styling: TailwindCSS with Flowbite
+- Database: Self hosted MySQL maybe Planetscale later
+- Boilerplate: Create-T3-App
+- Auth: Next-Auth
+- Hosting: Vercel
+- Map Provider: Leaflet
+- Websocket Provider: TODO
