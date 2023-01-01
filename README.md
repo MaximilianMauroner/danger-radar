@@ -42,13 +42,13 @@ providing them with a range of features and resources to help protect them and k
 - [ ]  show emergency contact list
 - [ ]  implement useful Infos page for self defense
 - [ ]  safe route calculator
-- [ ] implement better modal with "good point" and "bad point" dropdown
+- [x] implement better modal with "good point" and "bad point" select
 - [ ] time selector for danger radar
 - [ ] emergency sharing functionality
 - [ ] location tracking functionality
 - [ ] street name and pathfinder
-- [ ] danger point slider
-- [ ] positive points with annotations e.g. "safe place" or "good lighting"
+- [x] danger point select
+- [x] positive points with annotations e.g. "safe place" or "good lighting"
 
 ## Technologies
 

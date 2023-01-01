@@ -76,28 +76,33 @@ model VerificationToken {
 }
 
 model Marker {
-  id         BigInt      @id @default(autoincrement())
-  name       String?
-  lat        Float
-  lng        Float
-  zoomLevel  Int
-  markerType MarkerType  @default(USER)
-  userId     String?
-  message    String?     @db.Text
-  danger     DangerLevel @default(MEDIUM)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  id          BigInt       @id @default(autoincrement())
+  lat         Float
+  lng         Float
+  zoomLevel   Int
+  userId      String?
+  message     String?      @db.Text
+  makerSource MarkerSource @default(USER)
+  markerType  MarkerType   @default(DANGER)
+  level       MarkerLevel  @default(MEDIUM)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   user User? @relation(fields: [userId], references: [id])
 }
 
-enum DangerLevel {
+enum MarkerLevel {
   LOW
   MEDIUM
   HIGH
 }
 
 enum MarkerType {
+  DANGER
+  SAFETY
+}
+
+enum MarkerSource {
   USER
   NEWS
 }

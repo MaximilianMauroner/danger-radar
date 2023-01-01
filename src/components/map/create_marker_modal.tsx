@@ -4,36 +4,62 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { trpc } from "../../utils/trpc";
 import { LatLng } from "leaflet";
 import { useMap } from "react-leaflet";
+import { MarkerLevel, MarkerType } from "@prisma/client";
+import { z } from "zod";
 
 const CreateMarkerModal = ({
                              modalOpen,
                              closeModal,
                              markerPosition,
                              refetch
-                           }: { modalOpen: boolean, closeModal: () => void, markerPosition: LatLng, refetch: () => void }) => {
+                           }: {
+  modalOpen: boolean;
+  closeModal: () => void;
+  markerPosition: LatLng;
+  refetch: () => void;
+}) => {
+  const [isDanger, setIsDanger] = useState(true);
   const makeMarker = trpc.marker.addMarker.useMutation();
   const cancelButtonRef = useRef(null);
   const [message, setMessage] = useState("");
+  const [level, setLevel] = useState("MEDIUM");
   const formatLatLng = (pos: number) => {
-    return pos.toFixed(3);
+    return pos.toFixed(5);
   };
   const map = useMap();
   const saveForm = () => {
-    makeMarker.mutate({
-      lat: markerPosition.lat,
-      lng: markerPosition.lng,
-      zoomLevel: map.getZoom(),
-      message: message
-    }, {
-      onSuccess: () => {
-        refetch();
-        closeModal();
+    makeMarker.mutate(
+      {
+        lat: markerPosition.lat,
+        lng: markerPosition.lng,
+        zoomLevel: map.getZoom(),
+        message: message,
+        markerLevel: z.nativeEnum(MarkerLevel).parse(level),
+        type: isDanger ? MarkerType.DANGER : MarkerType.SAFETY
+      },
+      {
+        onSuccess: () => {
+          refetch();
+          closeModal();
+        }
       }
-    });
+    );
+  };
+  const dynamicString = (dangerString: string, safetyString: string) => {
+    if (isDanger) {
+      return dangerString;
+    } else {
+      return safetyString;
+    }
   };
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-40" initialFocus={cancelButtonRef} onClose={closeModal}>
+      <Dialog
+        as="div"
+        className="relative z-40"
+        initialFocus={cancelButtonRef}
+        onClose={closeModal}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -58,37 +84,125 @@ const CreateMarkerModal = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel
-                className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-full sm:my-8 sm:w-full sm:max-w-lg">
+                className="relative w-full transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <ul
+                    className="mb-5 flex divide-x divide-gray-200 rounded-lg text-center text-sm font-medium shadow sm:flex">
+                    <li className="w-full">
+                      <button
+                        onClick={() => setIsDanger(true)}
+                        className="active inline-block w-full rounded-l-lg bg-red-700 p-4 text-white focus:ring-0"
+                      >
+                        Danger
+                      </button>
+                    </li>
+                    <li className="w-full">
+                      <button
+                        onClick={() => setIsDanger(false)}
+                        className="inline-block w-full rounded-r-lg bg-green-700 p-4 text-white focus:ring-0"
+                      >
+                        Safety
+                      </button>
+                    </li>
+                  </ul>
+
+
                   <div className="sm:flex sm:items-start">
                     <div
-                      className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                      className={
+                        "mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10 " +
+                        dynamicString("bg-red-100", "bg-green-100")
+                      }
+                    >
+                      <ExclamationTriangleIcon
+                        className={
+                          "h-6 w-6 " +
+                          dynamicString("text-red-600", "text-green-600")
+                        }
+                        aria-hidden="true"
+                      />
                     </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                      <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                        Add Danger Marker
+                    <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium leading-6 text-gray-900"
+                      >
+                        Add {dynamicString("Danger", "Safety")} Marker
                       </Dialog.Title>
                       <div className="mt-2 w-full">
-                        <p className={"flex flex-col my-3 w-full rounded-xl text-sm text-gray-500"}>
-                          <span>Latitude: {formatLatLng(markerPosition.lat)}</span>
-                          <span>Longitude: {formatLatLng(markerPosition.lng)}</span>
+                        <p
+                          className={
+                            "my-3 flex w-full flex-col rounded-xl text-sm text-gray-500"
+                          }
+                        >
+                          <span>
+                            Latitude: {formatLatLng(markerPosition.lat)}
+                          </span>
+                          <span>
+                            Longitude: {formatLatLng(markerPosition.lng)}
+                          </span>
                         </p>
                       </div>
                       <div>
-                        <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                        <h3
+                          className="block pb-1 text-sm font-medium text-gray-700"
+                        >
+                          {dynamicString("Danger", "Safety") + " Level"}
+                        </h3>
+                        <ul
+                          className="mb-5 flex divide-x divide-gray-200 rounded-lg text-center text-sm font-medium shadow sm:flex">
+                          <li className="w-full">
+                            <button
+                              onClick={() => setLevel("LOW")}
+                              className={
+                                " inline-block w-full rounded-l-lg p-4 text-white focus:ring-0 " +
+                                dynamicString("bg-rose-400  hover:bg-rose-300", "bg-emerald-400  hover:bg-emerald-300")
+                              }
+                            >
+                              Low
+                            </button>
+                          </li>
+                          <li className="w-full">
+                            <button
+                              onClick={() => setLevel("MEDIUM")}
+                              className={
+                                "active inline-block w-full p-4 text-white focus:ring-0 " +
+                                dynamicString("bg-rose-600  hover:bg-rose-500", "bg-emerald-600  hover:bg-emerald-500")
+                              }
+                            >
+                              Medium
+                            </button>
+                          </li>
+                          <li className="w-full">
+                            <button
+                              onClick={() => setLevel("HIGH")}
+                              className={
+                                "inline-block w-full rounded-r-lg p-4 text-white focus:ring-0 " +
+                                dynamicString("bg-rose-900  hover:bg-rose-800", "bg-emerald-900  hover:bg-emerald-800")
+                              }
+                            >
+                              High
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="about"
+                          className="block text-sm font-medium text-gray-700"
+                        >
                           Description
                         </label>
                         <div className="mt-1">
-                      <textarea
-                        id="about"
-                        name="deesription"
-                        rows={3}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        placeholder="Brief description of the dangerous situation"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                      />
+                          <textarea
+                            id="about"
+                            name="deesription"
+                            rows={3}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Brief description of the dangerous situation"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -97,7 +211,13 @@ const CreateMarkerModal = ({
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    className={
+                      "inline-flex w-full justify-center rounded-md border border-transparent  px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm " +
+                      dynamicString(
+                        "bg-red-600 hover:bg-red-700 focus:ring-red-500",
+                        "bg-green-600 hover:bg-green-700 focus:ring-green-500"
+                      )
+                    }
                     onClick={() => saveForm()}
                   >
                     Save

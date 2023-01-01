@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Marker as MarkerPoint } from ".prisma/client";
+import { Marker as MarkerPoint, MarkerLevel, MarkerType } from ".prisma/client";
 import { Circle, Popup, useMap, useMapEvents } from "react-leaflet";
 import { trpc } from "../../utils/trpc";
 import { latLng, LatLng } from "leaflet";
@@ -7,7 +7,7 @@ import CreateMarkerModal from "./create_marker_modal";
 
 const maxOpacity = 0.8;
 
-const DangerMarker = () => {
+const ShowMarkers = () => {
   const [pointers, setPointers] = useState<MarkerPoint[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalLatLng, setModalLatLng] = useState<LatLng>(latLng(0, 0));
@@ -46,6 +46,25 @@ const DangerMarker = () => {
     setModalLatLng(latlng);
     setIsModalOpen(true);
   };
+  const getColour = (marker: MarkerPoint) => {
+    if (marker.markerType === MarkerType.DANGER) {
+      if (marker.level === MarkerLevel.LOW) {
+        return "lightred";
+      } else if (marker.level === MarkerLevel.MEDIUM) {
+        return "red";
+      } else {
+        return "darkred";
+      }
+    } else {
+      if (marker.level === MarkerLevel.LOW) {
+        return "lightgreen";
+      } else if (marker.level === MarkerLevel.MEDIUM) {
+        return "green";
+      } else {
+        return "darkgreen";
+      }
+    }
+  };
   return (
     <>
       <CreateMarkerModal key={modalLatLng.lat + " " + modalLatLng.lng} modalOpen={isModalOpen}
@@ -54,14 +73,14 @@ const DangerMarker = () => {
                          closeModal={() => setIsModalOpen(false)} /> {passMap && pointers.map((pointer: MarkerPoint) => (
       <Circle key={(pointer.lat + pointer.lng) * Math.random()} center={new LatLng(pointer.lat, pointer.lng)}
               radius={Math.pow((19 - pointer.zoomLevel) + 2, 3)}
-              color={"darkred"}
+              color={getColour(pointer)}
               opacity={1 / (19 - pointer.zoomLevel) * 0.5 <= maxOpacity ? 1 / (19 - pointer.zoomLevel) * 0.5 : maxOpacity}
               fillOpacity={1 / (19 - pointer.zoomLevel) * 0.5 <= maxOpacity ? 1 / (19 - pointer.zoomLevel) * 0.5 : maxOpacity}
               fill={true}>
-        {pointer.message ? <Popup>{pointer.message}</Popup> : null}
+        {pointer.message && pointer.zoomLevel == passMap.getZoom() ? <Popup>{pointer.message}</Popup> : null}
       </Circle>
     ))}
     </>
   );
 };
-export default DangerMarker;
+export default ShowMarkers;

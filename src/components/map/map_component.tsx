@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import DangerMarker from "./danger_marker";
 import UserMarker from "./user_marker";
+import ShowMarkers from "./show_markers";
 
 
 function Map() {
@@ -21,7 +21,7 @@ function Map() {
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <UserMarker />
-        <DangerMarker />
+        <ShowMarkers />
       </MapContainer>
     </>
   );

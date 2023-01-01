@@ -1,10 +1,17 @@
 import { z } from "zod";
-
+import { MarkerLevel, MarkerSource, MarkerType } from "@prisma/client";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const markerRouter = router({
   addMarker: protectedProcedure
-    .input(z.object({ lat: z.number(), lng: z.number(), zoomLevel: z.number(), message: z.string() }))
+    .input(z.object({
+      lat: z.number(),
+      lng: z.number(),
+      zoomLevel: z.number(),
+      message: z.string(),
+      markerLevel: z.nativeEnum(MarkerLevel),
+      type: z.nativeEnum(MarkerType)
+    }))
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.marker.create({
         data: {
@@ -12,7 +19,9 @@ export const markerRouter = router({
           lng: input.lng,
           zoomLevel: input.zoomLevel,
           message: input.message,
-          userId: ctx.session.user.id
+          userId: ctx.session.user.id,
+          level: input.markerLevel,
+          markerType: input.type
         }
       });
     }),
