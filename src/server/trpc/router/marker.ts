@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { MarkerLevel, MarkerSource, MarkerType } from "@prisma/client";
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { MarkerLevel, MarkerType } from "@prisma/client";
+import { router, protectedProcedure } from "../trpc";
 
 export const markerRouter = router({
   addMarker: protectedProcedure

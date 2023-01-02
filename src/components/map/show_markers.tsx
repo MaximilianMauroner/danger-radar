@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Marker as MarkerPoint, MarkerLevel, MarkerType } from ".prisma/client";
+import { MarkerLevel, MarkerType } from ".prisma/client";
+import type { Marker as MarkerPoint } from ".prisma/client";
 import { Circle, Popup, useMap, useMapEvents } from "react-leaflet";
 import { trpc } from "../../utils/trpc";
 import { latLng, LatLng } from "leaflet";
 import CreateMarkerModal from "./create_marker_modal";
-import { element } from "prop-types";
-import { log } from "util";
 
 const maxOpacity = 0.8;
 
@@ -27,7 +26,7 @@ const ShowMarkers = () => {
       setPointers(data);
     }
   });
-  const eventMap = useMapEvents({
+  useMapEvents({
     click(e) {
       const buttonElNotPressed = e.originalEvent.composedPath().findIndex((element: any) => typeof element.className === "string" && element.className.includes("move-to-location")) == -1;
       if (zoom >= 15 && buttonElNotPressed) {

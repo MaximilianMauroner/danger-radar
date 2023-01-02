@@ -1,9 +1,7 @@
-import { LockClosedIcon } from "@heroicons/react/20/solid";
 import { getSession, signIn } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
-import { GetServerSideProps } from "next";
-import Home from "../index";
+import type { GetServerSideProps } from "next";
 
 const signInProviders = [
   { slug: "google", name: "Google" },

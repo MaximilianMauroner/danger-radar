@@ -1,13 +1,12 @@
 import Head from "next/head";
 import BottomNavigation from "../components/layout/bottom_navigation";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import LoadingComponent from "../components/loading_component";
 import { env } from "../env/client.mjs";
-import { Friend, User } from "@prisma/client";
+import type { Friend, User } from "@prisma/client";
 
 const encryptFriendLink: (id: string, remaining: number) => (string) = (id: string, remaining: number) => {
   if (remaining === 0) {
@@ -18,7 +17,7 @@ const encryptFriendLink: (id: string, remaining: number) => (string) = (id: stri
   return encryptFriendLink(id, remaining - 1);
 };
 const AccountPage = () => {
-  const { data, status } = useSession({ required: true });
+  const { data } = useSession({ required: true });
   const [name, setName] = useState<string>(data?.user?.name ? data?.user?.name : "");
   const {
     data: userData,

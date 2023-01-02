@@ -1,14 +1,8 @@
 import { Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import React, { useEffect, useState } from "react";
-import { control, LatLng } from "leaflet";
+import type { LatLng } from "leaflet";
 import { defaultMarker } from "../icons/map_icons";
 import { MapPinIcon } from "@heroicons/react/24/solid";
-import L from "leaflet";
-import { mockSession } from "next-auth/client/__tests__/helpers/mocks";
-import user = mockSession.user;
-
-require("leaflet-routing-machine");
-
 
 const UserMarker = () => {
 
@@ -22,7 +16,7 @@ const UserMarker = () => {
     }, [passMap]);
 
     const map = useMapEvents({
-      locationfound(e: any) {
+      locationfound(e) {
         if (e.latlng != undefined) {
           setPosition(e.latlng);
           if (localStorage.getItem("userLocation")) {

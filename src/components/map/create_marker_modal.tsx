@@ -1,8 +1,8 @@
 import { Fragment, useRef, useState } from "react";
-import { Dialog, Transition, Menu } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { trpc } from "../../utils/trpc";
-import { LatLng } from "leaflet";
+import type { LatLng } from "leaflet";
 import { useMap } from "react-leaflet";
 import { MarkerLevel, MarkerType } from "@prisma/client";
 import { z } from "zod";

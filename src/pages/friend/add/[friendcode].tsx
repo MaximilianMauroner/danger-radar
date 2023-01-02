@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { z } from "zod";
 import { trpc } from "../../../utils/trpc";
 import Head from "next/head";
 import Image from "next/image";
-import Loading_component from "../../../components/loading_component";
 import LoadingComponent from "../../../components/loading_component";
 import Link from "next/link";
 import { env } from "../../../env/client.mjs";
@@ -22,7 +20,7 @@ const decryptFriendLink: (id: string, remaining: number) => (string) = (id: stri
 const Friendcode = () => {
   const router = useRouter();
   const { friendcode } = router.query;
-  const { data: sessionData, status } = useSession({ required: true });
+  const { data: sessionData } = useSession({ required: true });
   const userId = decryptFriendLink(z.string().parse(friendcode ? friendcode : ""), env.NEXT_PUBLIC_ENCRYPTION_COUNT);
   const [success, setSuccess] = useState(false);
   const {
