@@ -14,7 +14,6 @@ const BottomNavigation = () => {
   }, []);
 
   return (
-    <div className="w-full z-50">
       <section id="bottom-navigation"
                className="block fixed inset-x-0 bottom-0 z-10 dark:bg-slate-800 bg-white dark:text-white">
         <div id="tabs" className="flex justify-between relative">
@@ -46,7 +45,6 @@ const BottomNavigation = () => {
           </div>
         </div>
       </section>
-    </div>
   );
 };
 export default BottomNavigation;

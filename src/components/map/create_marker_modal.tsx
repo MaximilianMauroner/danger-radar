@@ -199,10 +199,10 @@ const CreateMarkerModal = ({
                         <div className="mt-1">
                           <textarea
                             id="about"
-                            name="deesription"
+                            name="description"
                             rows={3}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Brief description of the dangerous situation"
+                            placeholder={"Brief description of the situation"}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                           />

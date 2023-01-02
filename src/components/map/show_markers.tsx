@@ -4,6 +4,8 @@ import { Circle, Popup, useMap, useMapEvents } from "react-leaflet";
 import { trpc } from "../../utils/trpc";
 import { latLng, LatLng } from "leaflet";
 import CreateMarkerModal from "./create_marker_modal";
+import { element } from "prop-types";
+import { log } from "util";
 
 const maxOpacity = 0.8;
 
@@ -27,7 +29,8 @@ const ShowMarkers = () => {
   });
   const eventMap = useMapEvents({
     click(e) {
-      if (zoom >= 15) {
+      const buttonElNotPressed = e.originalEvent.composedPath().findIndex((element: any) => typeof element.className === "string" && element.className.includes("move-to-location")) == -1;
+      if (zoom >= 15 && buttonElNotPressed) {
         openModal(e.latlng);
       }
     },
