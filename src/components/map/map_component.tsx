@@ -3,7 +3,6 @@ import "leaflet/dist/leaflet.css";
 import UserMarker from "./user_marker";
 import ShowMarkers from "./show_markers";
 
-
 function Map() {
   const userLocation = JSON.parse(localStorage.getItem("userLocation") || "[51.505, -0.09]");
   const userZoom = JSON.parse(localStorage.getItem("userZoom") || "17");

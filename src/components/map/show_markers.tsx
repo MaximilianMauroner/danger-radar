@@ -49,19 +49,19 @@ const ShowMarkers = () => {
   const getColour = (marker: MarkerPoint) => {
     if (marker.markerType === MarkerType.DANGER) {
       if (marker.level === MarkerLevel.LOW) {
-        return "lightred";
+        return "#fb7185";
       } else if (marker.level === MarkerLevel.MEDIUM) {
-        return "red";
+        return "#e11d48";
       } else {
-        return "darkred";
+        return "#881337";
       }
     } else {
       if (marker.level === MarkerLevel.LOW) {
-        return "lightgreen";
+        return "#34d399";
       } else if (marker.level === MarkerLevel.MEDIUM) {
-        return "green";
+        return "#059669";
       } else {
-        return "darkgreen";
+        return "#064e3b";
       }
     }
   };

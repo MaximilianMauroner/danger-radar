@@ -51,7 +51,6 @@ const AccountPage = () => {
   if (data?.user?.name) {
     friendUrl = window.location.origin + "/friend/add/" + encryptFriendLink(data?.user?.id, env.NEXT_PUBLIC_ENCRYPTION_COUNT);
   }
-  console.log(userData);
   return (
     <>
       <Head>

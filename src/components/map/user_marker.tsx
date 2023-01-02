@@ -1,7 +1,9 @@
 import { Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import React, { useEffect, useState } from "react";
-import { LatLng } from "leaflet";
+import { control, LatLng } from "leaflet";
 import { defaultMarker } from "../icons/map_icons";
+import L from "leaflet";
+require('leaflet-routing-machine');
 
 const UserMarker = () => {
 
