@@ -39,7 +39,7 @@ const UserMarker = () => {
         <Marker position={position} icon={defaultMarker}>
           <Popup>You are here</Popup>
         </Marker>
-        <button className={"move-to-location bg-gray-900 rounded-full p-2 absolute bottom-16 right-4 z-[1000]"}
+        <button className={"move-to-location bg-gray-900 rounded-full p-2 absolute bottom-16 right-1 a z-[1000]"}
                 onClick={(event) => {
                   event.preventDefault();
                   event.stopPropagation();
