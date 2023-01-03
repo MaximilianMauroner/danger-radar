@@ -134,17 +134,18 @@ export const userRouter = router({
       },
       include: { friend: { include: { position: true } } },
     });
-
+    const intrests: string[] = [];
     friends.forEach((friend) => {
-      beamsClient.publishToInterests(["emergency-notification-" + friend.friendId], {
-        web: {
-          notification: {
-            title: "Emergency Mode Triggered",
-            body: `The User ${ctx.session.user.name} has activated emergency mode`,
-            deep_link: env.NEXTAUTH_URL,
-          },
+      intrests.push("emergency-notification-" + friend.friendId);
+    });
+    await beamsClient.publishToInterests(intrests, {
+      web: {
+        notification: {
+          title: "Emergency Mode Triggered",
+          body: `The User ${ctx.session.user.name} has activated emergency mode`,
+          deep_link: env.NEXTAUTH_URL,
         },
-      });
+      },
     });
   }),
   disableEmergencyMode: protectedProcedure.mutation(({ ctx }) => {
