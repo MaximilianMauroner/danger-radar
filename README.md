@@ -3,6 +3,7 @@
 ## What is this?
 
 ### ChatGPT summary
+
 An app that aims to protect women when they return home could have a variety of interesting and useful features. Some
 potential features could include the following:
 
@@ -42,15 +43,18 @@ providing them with a range of features and resources to help protect them and k
 - [x] account page
 - [x] implement better modal with "good point" and "bad point" select
 - [x] positive points with annotations e.g. "safe place" or "good lighting"
+- [x] emergency sharing functionality
+- [x] location tracking and sharing functionality
+- [x] implement notification system
 - [ ] friends can see GPS for x minutes or until x location
-- [ ] location tracking and sharing functionality
 - [ ] show emergency contact list
 - [ ] safe route calculator
 - [ ] time selector for danger radar
-- [x] emergency sharing functionality
 - [ ] implement radius based danger points that show based on radius and current bounds
 - [ ] street name and pathfinder -> found a package for this, just needs to be implemented now
 - [ ] implement useful Infos page for self defense
+- [ ] implement Privacy Policy and Terms of Service
+- [ ] add Buy-me-a-coffee button
 
 ## Technologies
 
