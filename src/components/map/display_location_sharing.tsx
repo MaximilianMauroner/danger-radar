@@ -17,13 +17,12 @@ const positionsObject = z.object({
 });
 type positionsType = z.infer<typeof positionsObject>;
 
+const pusherClient = new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, { cluster: "eu" });
+
 const DisplayLocationSharing = () => {
   const { data, status } = useSession({ required: true });
   const [userPositions, setUserPositions] = useState<positionsType[]>([]);
-  const pusherClient = useMemo(
-    () => new Pusher(env.NEXT_PUBLIC_PUSHER_KEY, { cluster: "eu" }),
-    []
-  );
+
   if (status === "loading" || !data?.user?.id) {
     return <LoadingComponent title={"Emergency Mode"} />;
   }
