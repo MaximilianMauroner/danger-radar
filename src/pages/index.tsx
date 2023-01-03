@@ -34,11 +34,9 @@ const Home: NextPage = () => {
   useEffect(() => {
     // console.log(userId, beamsClient);
     if (userId && beamsClient) {
-      Notification.permission;
       beamsClient
         .start()
         .then(() => {
-          console.log(beamsClient);
           if (beamsClient) {
             beamsClient.addDeviceInterest("emergency-mode" + userId);
           }
