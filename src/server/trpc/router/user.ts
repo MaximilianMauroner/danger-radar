@@ -143,7 +143,7 @@ export const userRouter = router({
         notification: {
           title: "Emergency Mode Triggered",
           body: `The User ${ctx.session.user.name} has activated emergency mode`,
-          deep_link: env.NEXTAUTH_URL,
+          // deep_link: env.NEXTAUTH_URL,
         },
       },
     });
