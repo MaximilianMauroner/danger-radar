@@ -38,7 +38,7 @@ const Home: NextPage = () => {
         .start()
         .then(() => {
           if (beamsClient) {
-            beamsClient.addDeviceInterest("emergency-mode" + userId);
+            beamsClient.addDeviceInterest("emergency-notification-" + userId);
           }
         })
         .catch(console.error);

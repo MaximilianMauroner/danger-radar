@@ -136,7 +136,7 @@ export const userRouter = router({
     });
 
     friends.forEach((friend) => {
-      beamsClient.publishToInterests(["emergency-mode" + friend.friendId], {
+      beamsClient.publishToInterests(["emergency-notification-" + friend.friendId], {
         web: {
           notification: {
             title: "Emergency Mode Triggered",
