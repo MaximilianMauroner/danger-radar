@@ -46,7 +46,7 @@ providing them with a range of features and resources to help protect them and k
 - [ ] show emergency contact list
 - [ ] safe route calculator
 - [ ] time selector for danger radar
-- [ ] emergency sharing functionality
+- [x] emergency sharing functionality
 - [ ] implement radius based danger points that show based on radius and current bounds
 - [ ] street name and pathfinder -> found a package for this, just needs to be implemented now
 - [ ] implement useful Infos page for self defense
@@ -60,4 +60,5 @@ providing them with a range of features and resources to help protect them and k
 - Auth: Next-Auth
 - Hosting: Vercel
 - Map Provider: Leaflet
-- Websocket Provider: TODO
+- Websocket Provider: Pusher
+- Cron Provider: Upstash
