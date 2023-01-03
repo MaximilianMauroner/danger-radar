@@ -13,3 +13,9 @@ export const dangerMarker = new Icon({
   popupAnchor: [0, -41]
 });
 
+export const userMarker = new Icon({
+  iconUrl: "user.svg",
+  iconSize: [30, 46],
+  iconAnchor: [13, 41],
+  popupAnchor: [0, -41]
+});
