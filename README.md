@@ -59,6 +59,7 @@ providing them with a range of features and resources to help protect them and k
 - Boilerplate: Create-T3-App
 - Auth: Next-Auth
 - Hosting: Vercel
-- Map Provider: Leaflet
-- Websocket Provider: Pusher
-- Cron Provider: Upstash
+- Map: Leaflet
+- Websocket: Pusher
+- Cron: Upstash
+- News: News API
