@@ -8,7 +8,9 @@ import { trpc } from "../utils/trpc";
 import { useRouter } from "next/router";
 import * as PusherPushNotifications from "@pusher/push-notifications-web";
 import { env } from "../env/client.mjs";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+let beamsClient: PusherPushNotifications.Client | undefined = undefined;
 
 const Home: NextPage = () => {
   const BasicMapComponent = dynamic(
@@ -22,27 +24,36 @@ const Home: NextPage = () => {
   const { status } = useSession({
     required: true,
   });
-  let beamsClient: PusherPushNotifications.Client | undefined = undefined;
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+
   useEffect(() => {
     beamsClient = new PusherPushNotifications.Client({
       instanceId: env.NEXT_PUBLIC_PUSHER_BEAMS_CLIENT_KEY,
     });
   }, []);
+  useEffect(() => {
+    // console.log(userId, beamsClient);
+    if (userId && beamsClient) {
+      Notification.permission;
+      beamsClient
+        .start()
+        .then(() => {
+          console.log(beamsClient);
+          if (beamsClient) {
+            beamsClient.addDeviceInterest("emergency-mode" + userId);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [beamsClient, userId]);
 
   trpc.user.me.useQuery(undefined, {
     onSuccess: (user) => {
       if (user?.emergencyMode == true) {
         router.push("/?emergency=true");
       }
-      if (user && beamsClient) {
-        beamsClient
-          .start()
-          .then(() =>
-            beamsClient
-              ? beamsClient.addDeviceInterest("emergency-mode" + user.id)
-              : null
-          )
-          .catch(console.error);
+      if (user?.id) {
+        setUserId(user.id);
       }
     },
   });
