@@ -119,7 +119,7 @@ export const userRouter = router({
       return position;
     }),
   enableEmergencyMode: protectedProcedure.mutation(async ({ ctx }) => {
-    await ctx.prisma.user.update({
+    const user = await ctx.prisma.user.update({
       where: {
         id: ctx.session.user.id,
       },
@@ -147,6 +147,7 @@ export const userRouter = router({
         },
       },
     });
+    return user;
   }),
   disableEmergencyMode: protectedProcedure.mutation(({ ctx }) => {
     return ctx.prisma.user.update({
