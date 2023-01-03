@@ -7,14 +7,16 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
-  swcMinify: true,
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en"
-  },
-  images: {
-    domains: ["lh3.googleusercontent.com", "cdn.discordapp.com"]
-  }
+    reactStrictMode: true,
+    swcMinify: true,
+    i18n: {
+        locales: ["en"],
+        defaultLocale: "en"
+    },
+    images: {
+        domains: ["lh3.googleusercontent.com", "cdn.discordapp.com"]
+    },
+    transpilePackages: ['@pusher/push-notifications-web'],
 };
+
 export default config;

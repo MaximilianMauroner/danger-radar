@@ -27,7 +27,8 @@ export const serverSchema = z.object({
     GOOGLE_CLIENT_SECRET: z.string(),
     PUSHER_APP_ID: z.string(),
     PUSHER_SECRET: z.string(),
-    PUSHER_CLUSTER: z.string()
+    PUSHER_CLUSTER: z.string(),
+    PUSHER_BEAMS_KEY: z.string()
 
 
 });
@@ -39,7 +40,8 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
     NEXT_PUBLIC_ENCRYPTION_COUNT: z.number().min(1).int(),
-    NEXT_PUBLIC_PUSHER_KEY: z.string()
+    NEXT_PUBLIC_PUSHER_KEY: z.string(),
+    NEXT_PUBLIC_PUSHER_BEAMS_CLIENT_KEY: z.string()
 });
 
 /**
@@ -50,5 +52,6 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
     NEXT_PUBLIC_ENCRYPTION_COUNT: Number.parseInt(process.env.NEXT_PUBLIC_ENCRYPTION_COUNT ? process.env.NEXT_PUBLIC_ENCRYPTION_COUNT : "1"),
-    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
+    NEXT_PUBLIC_PUSHER_BEAMS_CLIENT_KEY: process.env.NEXT_PUBLIC_PUSHER_BEAMS_CLIENT_KEY
 };
