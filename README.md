@@ -1,7 +1,8 @@
 # Danger Radar scuffed documentation
 
-## What is this? (ChatGPT summary)
+## What is this?
 
+### ChatGPT summary
 An app that aims to protect women when they return home could have a variety of interesting and useful features. Some
 potential features could include the following:
 
