@@ -93,15 +93,6 @@ export const userRouter = router({
                 where: {
                     selfId: ctx.session.user.id,
                     allowLocationSharing: true,
-                    friend: {
-                        position: {
-                            every: {
-                                timestamp: {
-                                    gt: new Date(Date.now() - 10000)
-                                }
-                            }
-                        }
-                    }
                 },
                 include: {friend: {include: {position: true}}}
             })
@@ -115,6 +106,26 @@ export const userRouter = router({
                 });
             })
             return position;
-        })
+        }),
+        enableEmergencyMode: protectedProcedure.mutation(({ctx}) => {
+            return ctx.prisma.user.update({
+                where: {
+                    id: ctx.session.user.id
+                },
+                data: {
+                    emergencyMode: true
+                }
+            });
+        }),
+        disableEmergencyMode: protectedProcedure.mutation(({ctx}) => {
+            return ctx.prisma.user.update({
+                where: {
+                    id: ctx.session.user.id
+                },
+                data: {
+                    emergencyMode: false
+                }
+            });
+        }),
     })
 ;

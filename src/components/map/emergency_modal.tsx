@@ -2,11 +2,23 @@ import {Fragment, useRef, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {ShieldExclamationIcon} from '@heroicons/react/24/outline'
 import Link from "next/link";
+import {trpc} from "../../utils/trpc";
+import {useRouter} from "next/router";
 
 const EmergencyModal = ({closeEmergencyModal}: { closeEmergencyModal: () => void }) => {
     const [open, setOpen] = useState(true)
     const cancelButtonRef = useRef(null)
+    const router = useRouter();
+    const emergencyMutation = trpc.user.enableEmergencyMode.useMutation({
+        onSuccess: () => {
+            closeEmergencyModal();
+            router.push("/?emergency=true");
+        }
+    });
 
+    const enableEmergencyMode = () => {
+        emergencyMutation.mutate();
+    }
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={closeEmergencyModal}>
@@ -50,15 +62,12 @@ const EmergencyModal = ({closeEmergencyModal}: { closeEmergencyModal: () => void
                                             <div className="mt-3">
                                                 <ul className={"pl-5 list-disc font-medium text-red-600"}>
                                                     <li>
-                                                        You will be sharing your location until the emergency mode is
+                                                        You will be sharing your location every 5 seconds until the
+                                                        emergency mode is
                                                         turned off
                                                     </li>
                                                     <li>
                                                         Your Emergency Contacts will be notified
-                                                    </li>
-                                                    <li>
-                                                        Your local set Emergency Number will be displayed and copied to
-                                                        your clipboard
                                                     </li>
                                                 </ul>
                                             </div>
@@ -66,12 +75,11 @@ const EmergencyModal = ({closeEmergencyModal}: { closeEmergencyModal: () => void
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                    <Link href={"/?emergency=true"}
-                                          onClick={() => closeEmergencyModal()}
-                                          className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                                    <button onClick={() => enableEmergencyMode()}
+                                            className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                                     >
                                         Activate
-                                    </Link>
+                                    </button>
                                     <button
                                         type="button"
                                         className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
