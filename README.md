@@ -53,8 +53,10 @@ providing them with a range of features and resources to help protect them and k
 - [ ] implement radius based danger points that show based on radius and current bounds
 - [ ] street name and pathfinder -> found a package for this, just needs to be implemented now
 - [ ] implement useful Infos page for self defense
-- [ ] implement Privacy Policy and Terms of Service
-- [ ] add Buy-me-a-coffee button
+- [x] implement Privacy Policy
+- [ ] implement Terms of Service
+- [x] add Buy-me-a-coffee button
+- [ ] add error handling
 
 ## Technologies
 

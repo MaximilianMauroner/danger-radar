@@ -2,8 +2,6 @@ import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { beamsClient, pusher } from "../../pusher";
-import { session } from "next-auth/core/routes";
-import { env } from "../../../env/server.mjs";
 
 export const userRouter = router({
   getUser: protectedProcedure
@@ -156,6 +154,30 @@ export const userRouter = router({
       },
       data: {
         emergencyMode: false,
+      },
+    });
+  }),
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    await ctx.prisma.friend.deleteMany({
+      where: {
+        OR: [
+          {
+            selfId: ctx.session.user.id,
+          },
+          {
+            friendId: ctx.session.user.id,
+          },
+        ],
+      },
+    });
+    await ctx.prisma.position.deleteMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+    return await ctx.prisma.user.delete({
+      where: {
+        id: ctx.session.user.id,
       },
     });
   }),
