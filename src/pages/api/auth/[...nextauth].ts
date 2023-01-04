@@ -30,7 +30,6 @@ export const authOptions: NextAuthOptions = {
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,
       clientSecret: env.INSTAGRAM_CLIENT_SECRET,
-      scope: "user_profile,user_media",
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
