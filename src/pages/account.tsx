@@ -98,6 +98,7 @@ const AccountPage = () => {
             {name}
           </span>
         </div>
+        <DeleteAccountModal />
         <div className="m-auto mb-20 w-full px-3 pt-5 sm:w-2/3 sm:px-0 md:w-1/2">
           <span
             className={
@@ -132,7 +133,6 @@ const AccountPage = () => {
             >
               Add Friend
             </button>
-            <DeleteAccountModal />
           </div>
         </div>
         <Miscellaneous />
