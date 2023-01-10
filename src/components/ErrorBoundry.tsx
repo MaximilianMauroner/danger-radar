@@ -30,13 +30,9 @@ class ErrorBoundary extends React.Component {
       return (
         <div>
           <h2>Oops, there is an error!</h2>
-          <span>{JSON.stringify(this.state)}</span>
-          <button
-            type="button"
-            onClick={() => this.setState({ hasError: false })}
-          >
-            Try again?
-          </button>
+          <br />
+          <span className={"py-8"}
+                onClick={() => navigator.clipboard.writeText(JSON.stringify(this.state))}>{JSON.stringify(this.state)}</span>
         </div>
       );
     }
