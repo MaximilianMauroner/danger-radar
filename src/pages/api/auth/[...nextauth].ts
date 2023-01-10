@@ -18,27 +18,28 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account }) {
       account && account.user_id ? delete account.user_id : null;
       return true;
-    },
+    }
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+      clientSecret: env.DISCORD_CLIENT_SECRET
     }),
     InstagramProvider({
       clientId: env.INSTAGRAM_CLIENT_ID,
       clientSecret: env.INSTAGRAM_CLIENT_SECRET,
+      checks: "both"
     }),
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
+      clientSecret: env.GOOGLE_CLIENT_SECRET
+    })
   ],
   pages: {
-    signIn: "/auth/signin",
-  },
+    signIn: "/auth/signin"
+  }
 };
 
 export default NextAuth(authOptions);
