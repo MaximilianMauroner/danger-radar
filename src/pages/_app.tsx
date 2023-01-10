@@ -6,21 +6,22 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import { useEffect } from "react";
+import ErrorBoundary from "../components/ErrorBoundry";
 
 const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+                                                       Component,
+                                                       pageProps: { session, ...pageProps }
+                                                     }) => {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/service-worker.js").then(
-        function (registration) {
+        function(registration) {
           console.log(
             "Service Worker registration successful with scope: ",
             registration.scope
           );
         },
-        function (err) {
+        function(err) {
           console.log("Service Worker registration failed: ", err);
         }
       );
@@ -28,9 +29,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }, []);
 
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <ErrorBoundary>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </ErrorBoundary>
+
   );
 };
 
