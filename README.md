@@ -34,30 +34,6 @@ providing them with a range of features and resources to help protect them and k
         - check if there is a way to send police the information data
 - insert place and the least dangerous route will be found
 
-## Todo
-
-- [x] map integration
-- [x] friend invites
-- [x] danger point select
-- [x] map point add modal
-- [x] account page
-- [x] implement better modal with "good point" and "bad point" select
-- [x] positive points with annotations e.g. "safe place" or "good lighting"
-- [x] emergency sharing functionality
-- [x] location tracking and sharing functionality
-- [x] implement notification system
-- [ ] friends can see GPS for x minutes or until x location
-- [ ] show emergency contact list
-- [ ] safe route calculator
-- [ ] time selector for danger radar
-- [ ] implement radius based danger points that show based on radius and current bounds
-- [ ] street name and pathfinder -> found a package for this, just needs to be implemented now
-- [ ] implement useful Infos page for self defense
-- [x] implement Privacy Policy
-- [ ] implement Terms of Service
-- [x] add Buy-me-a-coffee button
-- [ ] add error handling
-
 ## Technologies
 
 - Language: TS with Next.js
