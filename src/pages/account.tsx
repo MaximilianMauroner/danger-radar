@@ -60,6 +60,20 @@ const AccountPage = () => {
       }
     );
   };
+  const checkNavigaorPermissions = (friendUrl: string) => {
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      console.log(result.state);
+      if (result.state === "granted") {
+        navigator.share({
+          title: "Add Friend",
+          text: "Share this with a Friend to add them",
+          url: friendUrl,
+        });
+        navigator.clipboard.writeText(friendUrl);
+      } else if (result.state === "prompt") {
+      }
+    });
+  };
   if (isLoading) {
     return <LoadingComponent title={"Danger Radar"} />;
   }
@@ -93,7 +107,9 @@ const AccountPage = () => {
             Name
           </span>
           <span
-            className={"block text-2xl font-bold text-gray-700 dark:text-white"}
+            className={
+              "block text-2xl font-bold text-slate-900 dark:text-white"
+            }
           >
             {name}
           </span>
@@ -102,7 +118,7 @@ const AccountPage = () => {
         <div className="m-auto mb-20 w-full px-3 pt-5 sm:w-2/3 sm:px-0 md:w-1/2">
           <span
             className={
-              "block text-3xl font-bold text-gray-700 dark:text-emerald-400"
+              "block text-3xl font-bold text-emerald-600 dark:text-emerald-400"
             }
           >
             {"Friends"}
@@ -120,15 +136,10 @@ const AccountPage = () => {
           <div className={"my-5 flex flex-col items-center gap-3"}>
             <button
               onClick={() => {
-                navigator.share({
-                  title: "Add Friend",
-                  text: "Share this with a Friend to add them",
-                  url: friendUrl,
-                });
-                navigator.clipboard.writeText(friendUrl);
+                checkNavigaorPermissions(friendUrl);
               }}
               className={
-                "mx-auto block flex items-center justify-between rounded-xl p-4 text-center dark:bg-green-700 dark:text-white"
+                "mx-auto block flex items-center justify-between rounded-xl bg-green-700 p-4 text-center text-white"
               }
             >
               Add Friend
@@ -231,7 +242,7 @@ const Miscellaneous = () => {
     <>
       <button
         className={
-          "mx-auto block flex items-center justify-between rounded-xl p-4 text-center dark:bg-gray-700 dark:text-white"
+          "mx-auto block flex items-center justify-between rounded-xl border border-gray-300 bg-white p-4 text-center dark:border-gray-700 dark:bg-gray-700 dark:text-white"
         }
         onClick={() => setIsOpen(true)}
       >
@@ -350,7 +361,7 @@ const DeleteAccountModal = () => {
     <>
       <button
         className={
-          "mx-auto block flex items-center justify-between rounded-xl p-4 text-center dark:bg-red-700 dark:text-white"
+          "mx-auto block flex items-center justify-between rounded-xl bg-red-700 p-4 text-center text-white"
         }
         onClick={() => setIsOpen(true)}
       >
