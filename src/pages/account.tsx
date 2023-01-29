@@ -62,13 +62,14 @@ const AccountPage = () => {
   };
   const checkNavigaorPermissions = (friendUrl: string) => {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      console.log(result.state);
       if (result.state === "granted") {
-        navigator.share({
-          title: "Add Friend",
-          text: "Share this with a Friend to add them",
-          url: friendUrl,
-        });
+        if (navigator.share != undefined) {
+          navigator.share({
+            title: "Add Friend",
+            text: "Share this with a Friend to add them",
+            url: friendUrl,
+          });
+        }
         navigator.clipboard.writeText(friendUrl);
       } else if (result.state === "prompt") {
       }
