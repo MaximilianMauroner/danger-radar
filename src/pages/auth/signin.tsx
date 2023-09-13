@@ -55,9 +55,9 @@ const SignInButton = ({ provider }: { provider: { slug: string, name: string } }
   return (
     <button
       onClick={() => signIn(provider.slug)}
-      className="flex w-full justify-center rounded-3xl border-none dark:bg-white p-1 dark:text-slate-700 font-semibold py-2 dark:hover:bg-gray-300 sm:p-2">
+      className="flex w-full justify-center rounded-3xl border border-gray-200 hover:bg-gray-50 text-black dark:bg-white p-1 dark:text-slate-700 font-semibold py-2 dark:hover:bg-gray-300 sm:p-2">
       <Image height={20} width={20} src={"/" + provider.slug + ".svg"} className="mr-2 h-6 w-6 object-fill"
-             alt={""} />{"Sign in with " + provider.name}
+             alt={provider.name} />{"Sign in with " + provider.name}
     </button>
   );
 };
